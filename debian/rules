@@ -11,6 +11,5 @@ override_dh_auto_build:
 	npm --cache "$(NPM_CACHE)" install
 	./node_modules/.bin/webpack
 	$(RM) -rf node_modules
-	npm --cache "$(NPM_CACHE)" install --production
-	$(RM) -rf "$(NPM_CACHE)"
+	npm prune --production
 	chmod a+x webthings-gateway
