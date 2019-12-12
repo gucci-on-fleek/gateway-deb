@@ -9,9 +9,9 @@ Add a launcher for the gateway.
 +  exit 1
 +fi
 +
-+if [ ! -d "/etc/webthings-gateway" ]; then
-+  mkdir "/etc/webthings-gateway"
-+  chown -R webthings:webthings "/etc/webthings-gateway"
++if [ ! -d "/var/lib/webthings-gateway" ]; then
++  mkdir "/var/lib/webthings-gateway"
++  chown -R webthings:webthings "/var/lib/webthings-gateway"
 +fi
 +
 +cd /usr/lib/webthings-gateway
