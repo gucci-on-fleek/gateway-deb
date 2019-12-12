@@ -4,7 +4,7 @@
 
 apt update
 apt install ca-certificates git debhelper nodejs npm python python3-setuptools devscripts fakeroot git-lfs build-essential --no-install-recommends -y
-git clone --depth 1 https://github.com/mozilla-iot/gateway-deb.git
+git clone --depth 1 https://github.com/gucci-on-fleek/gateway-deb.git
 cd gateway-deb
 git lfs pull
 tar xf webthings-gateway*
