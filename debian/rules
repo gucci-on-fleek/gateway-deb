@@ -10,4 +10,5 @@ override_dh_auto_build:
 	npm install
 	./node_modules/.bin/webpack
 	npm prune --production
-	chmod a+x webthings-gateway
+	cc webthings-gateway.c -Wall -o webthings-gateway
+	chmod u+s webthings-gateway
