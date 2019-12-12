@@ -10,3 +10,7 @@ cp -r debian gateway-0.10.0
 cd gateway-0.10.0
 debuild -us -uc
 ```
+or
+```sh
+./build.sh
+```
