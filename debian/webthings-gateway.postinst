@@ -19,6 +19,7 @@ case "$1" in
     adduser --disabled-password --quiet --system \
       --home /var/run/webthings-gateway --no-create-home \
       --gecos "Mozilla WebThings Gateway" --group webthings
+	chmod u+s /usr/bin/webthings-gateway
 
   ;;
   abort-upgrade|abort-remove|abort-deconfigure)
