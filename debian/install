@@ -6,3 +6,4 @@ node_modules usr/lib/webthings-gateway
 package-lock.json usr/lib/webthings-gateway
 package.json usr/lib/webthings-gateway
 static usr/lib/webthings-gateway
+.empty var/lib/webthings-gateway
