@@ -1,4 +1,0 @@
-[submodule "gateway"]
-	path = gateway
-	url = https://github.com/mozilla-iot/gateway.git
-	branch = v0.10.0
