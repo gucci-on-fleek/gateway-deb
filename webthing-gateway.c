@@ -1,0 +1,109 @@
+/* WebThings Gateway Launcher
+ * 
+ * When ran, this program will change the ownership of the config directory
+ * and run the WebThings Gateway as the appropriate user.
+ * This program must be ran as root! The easiest way to do so is to use `chmod u+s`,
+ * AKA give it the `setuid` permission.
+ */
+
+#define _XOPEN_SOURCE 700 // For FTW
+#include <errno.h>
+#include <ftw.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define NODE_PATH "/usr/bin/node"
+#define GATEWAY_DIR "/usr/lib/webthings-gateway"
+#define GATEWAY_USER "webthings"
+#define GATEWAY_CONFIG_DIR "/var/lib/webthings-gateway"
+
+#ifndef USE_FDS
+#define USE_FDS 15
+#endif
+
+int errno;         // Global to let the calling function handle errors
+uid_t gateway_uid; // Global to share UID with `change_ownership`
+
+uid_t get_uid(char *username)
+{
+    /* Get the UID from a username
+     * Returns -1 on error, the UID otherwise 
+     */
+    struct passwd pwd;
+    struct passwd *result;
+    char *buf;
+    size_t bufsize = 16384; // Should be big enough
+
+    buf = malloc(bufsize);
+    if (buf == NULL)
+    {
+        errno = ENOBUFS;
+        perror("malloc");
+        return -1;
+    }
+
+    errno = getpwnam_r(GATEWAY_USER, &pwd, buf, bufsize, &result);
+    free(buf);
+    if (result == NULL)
+    {
+        perror("getpwnam");
+        return -1;
+    }
+
+    return pwd.pw_uid;
+}
+
+int change_ownership(const char *filepath, const struct stat *info,
+                     const int typeflag, struct FTW *pathinfo)
+{
+    /* Changes the ownership of a file
+     * Uses the global `gateway_uid` as the new UID
+     */
+    if (chown(filepath, gateway_uid, -1) == -1)
+    {
+        perror("chown");
+    }
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    const char *node_path = NODE_PATH;
+    char *node_cmd[] = {"node", "build/gateway.js", (char *)0};
+    char *node_env[] = {"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", (char *)0}; // We need to pass `PATH` as an environment variable
+
+    gateway_uid = get_uid(GATEWAY_USER);
+    if (errno != 0 || gateway_uid == -1)
+    {
+        perror("get_uid");
+        return errno;
+    }
+
+    errno = nftw(GATEWAY_CONFIG_DIR, change_ownership, USE_FDS, FTW_PHYS); // Equivalent to `chmod -R`
+
+    errno = setuid(gateway_uid);
+    if (errno != 0)
+    {
+        perror("setuid");
+        return errno;
+    }
+
+    errno = chdir(GATEWAY_DIR);
+    if (errno != 0)
+    {
+        perror("chdir");
+        return errno;
+    }
+
+    errno = execve(node_path, node_cmd, node_env);
+    if (errno != 0)
+    {
+        perror("execve");
+        return errno;
+    }
+
+    return 0;
+}
