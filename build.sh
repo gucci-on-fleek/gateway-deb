@@ -12,4 +12,5 @@ cp -r debian webthings-gateway
 cd webthings-gateway
 npm i -g npm # The default system npm tends to be really buggy
 ln -fs /usr/local/bin/npm /usr/bin/npm
+npm config set unsafe-perm true
 debuild -us -uc
