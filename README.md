@@ -7,7 +7,3 @@ Web of Things gateway.
 ```sh
 ./build.sh
 ```
-or
-```sh
-./build.sh
-```

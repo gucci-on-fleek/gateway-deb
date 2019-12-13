@@ -12,9 +12,9 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v1
       - name: Build the Package
-        run: sudo sh ./build.sh
+        run: sudo ./build.sh
       - name: Save the package
         uses: actions/upload-artifact@v1
         with:
-          name: webthings-gateway_0.10.0-1_amd64.deb
-          path: gateway-deb/webthings-gateway_0.10.0-1_amd64.deb
+          name: webthings-gateway.deb
+          path: gateway-deb/webthings-gateway.deb

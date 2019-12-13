@@ -1,11 +1,12 @@
+.empty var/lib/webthings-gateway
 LICENSE usr/lib/webthings-gateway
 build usr/lib/webthings-gateway
 config/default.js usr/lib/webthings-gateway/config
 intent-parser usr/lib/webthings-gateway
-webthings-gateway usr/bin
 node_modules usr/lib/webthings-gateway
 package-lock.json usr/lib/webthings-gateway
 package.json usr/lib/webthings-gateway
 python usr/lib/webthings-gateway
+src usr/lib/webthings-gateway
 static usr/lib/webthings-gateway
-.empty var/lib/webthings-gateway
+webthings-gateway usr/bin
