@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@
+	dh $@ --with-systemd
 
 override_dh_auto_clean:
 	$(RM) -rf build node_modules
@@ -12,3 +12,21 @@ override_dh_auto_build:
 	npm prune --production
 	cc webthings-gateway.c -Wall -o webthings-gateway
 	chmod u+s webthings-gateway
+	chmod a+x webthings-gateway
+	mkdir python
+	cd gateway-addon-python && \
+		git init && \
+		python3 -m pip install --install-option="--prefix=" -t ../python .
+	python3 -m pip install --install-option="--prefix=" -t ./python "git+https://github.com/mycroftai/adapt#egg=adapt-parser"
+
+override_dh_installinit:
+	dh_installinit --name=webthings-gateway-intent-parser
+	dh_installinit --name=webthings-gateway
+
+override_dh_systemd_enable:
+	dh_systemd_enable --name=webthings-gateway-intent-parser
+	dh_systemd_enable --name=webthings-gateway
+
+override_dh_systemd_start:
+	dh_systemd_start --name=webthings-gateway-intent-parser
+	dh_systemd_start --name=webthings-gateway

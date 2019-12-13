@@ -77,7 +77,7 @@ Add a launcher for the gateway.
 +{
 +    const char *node_path = NODE_PATH;
 +    char *node_cmd[] = {"node", "build/gateway.js", (char *)0};
-+    char *node_env[] = {"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", (char *)0}; // We need to pass `PATH` as an environment variable
++    char *node_env[] = {"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "PYTHONPATH=/usr/lib/webthings-gateway/python", (char *)0}; // We need to pass `PATH` as an environment variable
 +
 +    gateway_uid = get_uid(GATEWAY_USER);
 +    if (errno != 0 || gateway_uid == -1)
